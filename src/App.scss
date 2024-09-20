@@ -1,0 +1,15 @@
+@import './styles/variables';
+@import url('./styles/header.scss');
+@import url('./styles/currency.scss');
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+.App {
+  height: 100vh;
+  background-color: $main-background;
+}

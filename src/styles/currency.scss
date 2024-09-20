@@ -1,0 +1,90 @@
+@import './mixins';
+@import './variables';
+
+.currencies {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.currency {
+  width: 80%;
+  height: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: $currency-bg;
+  border: 2px solid $currency-block-border-color;
+  border-top: none;
+
+  &:first-child {
+    margin-top: 20px;
+    border-top: 2px solid $currency-block-border-color;
+    border-radius: 20px 20px 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 0 20px 20px;
+  }
+
+  &__input {
+    @include sharedInputStyles;
+    border-radius: 20px;
+    font-size: $input-fz;
+    background-color: $input-bg;
+    color: $input-color;
+
+    &:hover {
+      background-color: $input-bg-hover;
+    }
+
+    &:focus {
+      border-color: $focus-border;
+      outline: none;
+    }
+
+    &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+      display: none;
+    }
+  }
+
+  &__select {
+    @include sharedInputStyles;
+    border-radius: 20px 20px 0 0;
+    font-size: $select-fz;
+    font-weight: 500;
+    color: $select-color;
+    background-color: $select-bg;
+
+    &:hover {
+      background-color: $select-bg-hover;
+    }
+
+    &:focus {
+      border-color: $focus-border;
+      outline: none;
+    }
+  }
+}
+
+.fa-solid {
+  width: $currency-icon-size;
+  height: $currency-icon-size;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $currency-icon-color;
+}
+
+.fa-dollar-sign {
+  background-color: $currency-dollar-bg;
+}
+
+.fa-hryvnia-sign {
+  background-color: $currency-hryvna-bg;
+}
+
+.fa-euro-sign {
+  background-color: $currency-euro-bg;
+}
