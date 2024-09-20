@@ -1,15 +1,15 @@
 import { Currency } from "../currency/currency";
 
 interface Props {
-  valueFrom: number;
-  valueTo: number;
+  valueFrom: number | '';
+  valueTo: number | '';
   currencyFrom: string;
   currencyTo: string;
-  setValueTo: React.Dispatch<React.SetStateAction<number>>;
-  setValueFrom: React.Dispatch<React.SetStateAction<number>>;
+  setValueTo: React.Dispatch<React.SetStateAction<number | ''>>;
+  setValueFrom: React.Dispatch<React.SetStateAction<number | ''>>;
   handleInputChange: (
     event: React.ChangeEvent<HTMLInputElement>,
-    setValue: React.Dispatch<React.SetStateAction<number>>
+    setValue: React.Dispatch<React.SetStateAction<number | ''>>
   ) => void;
   handleSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -29,6 +29,7 @@ export const Currencies: React.FC<Props> = ({
       <Currency
         value={valueFrom}
         activeCurrency={currencyFrom}
+        range={'From'}
         setValue={setValueFrom}
         handleInputChange={handleInputChange}
         handleSelectChange={handleSelectChange}
@@ -37,6 +38,7 @@ export const Currencies: React.FC<Props> = ({
       <Currency
         value={valueTo}
         activeCurrency={currencyTo}
+        range={'To'}
         setValue={setValueTo}
         handleInputChange={handleInputChange}
         handleSelectChange={handleSelectChange}

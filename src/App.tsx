@@ -7,17 +7,17 @@ import { Currencies as CurrencyList } from "./components/currencies/currencies";
 const intitialCurrency = {
   UAH: {
     UAH: 1,
-    USD: 1,
-    EUR: 1,
+    USD: 0.0241,
+    EUR: 0.0216,
   },
   USD: {
-    UAH: 1,
+    UAH: 41.4641,
     USD: 1,
-    EUR: 1,
+    EUR: 0.8969,
   },
   EUR: {
-    UAH: 1,
-    USD: 1,
+    UAH: 46.3087,
+    USD: 1.1149,
     EUR: 1,
   },
 };
@@ -26,10 +26,10 @@ function App() {
   const [currency, setCurrency] = useState<Currencies>(intitialCurrency);
   const [currencyFrom, setCurrencyFrom] = useState("UAH");
   const [currencyTo, setCurrencyTo] = useState("USD");
-  const [valueFrom, setValueFrom] = useState(
+  const [valueFrom, setValueFrom] = useState<number | ''>(
     currency[currencyFrom][currencyFrom]
   );
-  const [valueTo, setValueTo] = useState(currency[currencyTo][currencyFrom]);
+  const [valueTo, setValueTo] = useState<number | ''>(currency[currencyTo][currencyFrom]);
 
   useEffect(() => {
     fetch(
@@ -98,60 +98,56 @@ function App() {
 
   useEffect(() => {
     setValueFrom(currency[currencyFrom][currencyFrom]);
-  }, [currencyFrom, currency]);
-
-  useEffect(() => {
     setValueTo(currency[currencyTo][currencyFrom]);
-  }, [currencyTo, currency, currencyFrom]);
+  }, [currencyFrom, currency, currencyTo]);
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (event.target.name === "currencyFrom") {
-      setCurrencyFrom(event.target.value);
-      setValueTo(
+      if (valueFrom !== '') {
+        setCurrencyFrom(event.target.value);
+        setValueTo(
         () => +(valueFrom * currency[event.target.value][currencyTo]).toFixed(3)
       );
+      }
+      
     }
 
     if (event.target.name === "currencyTo") {
-      setCurrencyTo(event.target.value);
-      setValueFrom(
-        () => +(valueTo * currency[event.target.value][currencyFrom]).toFixed(3)
-      );
+      if (valueTo !== '') {
+        setCurrencyTo(event.target.value);
+        setValueFrom(
+          () => +(valueTo * currency[event.target.value][currencyFrom]).toFixed(3)
+        );
+      }
     }
   };
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    callback: (arg: number) => void
+    callback: (arg: number | "") => void
   ) => {
-    const regExp = /[\d.]/gm;
-
-    if (regExp.test(event.target.value)) {
+    const regExp = /^[\d.]*$/gm;
+  
+    if (event.target.value === "") {
+      callback("");
+    } else if (regExp.test(event.target.value)) {
       callback(+event.target.value);
     }
-
+  
     if (event.target.name === "inputFrom") {
-      console.log(event.target.value);
-      console.log(event.target.value === "0");
-
-      if (event.target.value === "0") {
-        setValueFrom(+event.target.value);
-      }
-
-      setValueTo(
-        () => +event.target.value * currency[currencyTo][currencyFrom]
-      );
+      setValueTo(() => {
+        return event.target.value === ""
+          ? ""
+          : +event.target.value * currency[currencyTo][currencyFrom];
+      });
     }
-
+  
     if (event.target.name === "inputTo") {
-      console.log(event.target.value);
-      if (event.target.value === "0") {
-        event.target.value = "";
-      }
-
-      setValueFrom(
-        () => +event.target.value * currency[currencyTo][currencyFrom]
-      );
+      setValueFrom(() => {
+        return event.target.value === ""
+          ? ""
+          : +event.target.value * currency[currencyTo][currencyFrom];
+      });
     }
   };
 

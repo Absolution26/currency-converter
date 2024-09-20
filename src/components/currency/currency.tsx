@@ -1,10 +1,13 @@
+import { useState } from "react";
+
 interface Props {
-  value: number;
+  value: number | '';
   activeCurrency: string;
-  setValue: React.Dispatch<React.SetStateAction<number>>;
+  range: string;
+  setValue: React.Dispatch<React.SetStateAction<number | ''>>;
   handleInputChange: (
     event: React.ChangeEvent<HTMLInputElement>,
-    setValue: React.Dispatch<React.SetStateAction<number>>
+    setValue: React.Dispatch<React.SetStateAction<number | ''>>
   ) => void;
   handleSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -12,30 +15,35 @@ interface Props {
 export const Currency: React.FC<Props> = ({
   value,
   activeCurrency,
+  range,
   setValue,
   handleInputChange,
   handleSelectChange,
 }) => {
+  const [icon, setIcon] = useState(activeCurrency);
+
   return (
     <div className="currency">
       <input
         type="number"
-        name="inputFrom"
+        name={`input${range}`}
         className="currency__input"
-        min="0"
         value={value}
         onChange={(event) => handleInputChange(event, setValue)}
       />
 
-      {activeCurrency === "UAH" && <i className="fa-solid fa-hryvnia-sign"></i>}
-      {activeCurrency === "USD" && <i className="fa-solid fa-dollar-sign"></i>}
-      {activeCurrency === "EUR" && <i className="fa-solid fa-euro-sign"></i>}
-
+      {icon === "UAH" && <i className="fa-solid fa-hryvnia-sign"></i>}
+      {icon === "USD" && <i className="fa-solid fa-dollar-sign"></i>}
+      {icon === "EUR" && <i className="fa-solid fa-euro-sign"></i>}
+    
       <select
-        name="currencyFrom"
+        name={`currency${range}`}
         className="currency__select"
-        defaultValue="UAH"
-        onChange={handleSelectChange}
+        defaultValue={activeCurrency}
+        onChange={(event) => {
+          setIcon(event.target.value);
+          handleSelectChange(event);
+        }}
       >
         <option value="UAH" className="currency__item">
           UAH
